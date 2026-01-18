@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dla Julci</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300&display=swap" rel="stylesheet">
     
@@ -20,138 +20,124 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Zmienione na min-height */
+            min-height: 100vh;
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         .envelope-wrapper {
             position: relative;
             cursor: pointer;
             transition: transform 0.4s ease;
-            margin-top: 100px; /* Zmniejszony margines, by zmieścić wysunięty list */
-            transform: scale(1.1);
-        }
-
-        .envelope-wrapper:hover {
-            transform: scale(1.15);
+            margin-top: 80px; 
+            transform: scale(1);
         }
 
         .envelope {
             position: relative;
-            width: 300px;
-            height: 200px;
+            width: 280px;
+            height: 180px;
             background-color: var(--envelope-color);
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            z-index: 2; /* Zapewnia, że koperta jest nad tłem */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            z-index: 2;
         }
 
-        /* Klapa koperty */
         .envelope::before {
             content: "";
             position: absolute;
             top: 0;
-            z-index: 4; /* Wyżej niż list na początku */
-            border-top: 110px solid var(--envelope-color);
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
+            z-index: 4;
+            border-top: 100px solid var(--envelope-color);
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
             transform-origin: top;
             transition: transform 0.6s ease-in-out, z-index 0.2s 0.3s;
         }
 
         .seal {
             position: absolute;
-            top: 90px;
-            left: 135px;
+            top: 80px;
+            left: 125px;
             width: 30px;
             height: 30px;
             background-color: var(--accent-gold);
             border-radius: 50%;
             z-index: 5;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             transition: opacity 0.3s;
         }
 
         .letter {
             position: absolute;
-            bottom: 5px; /* Lekko schowany w kopercie */
+            bottom: 5px;
             left: 10px;
-            width: 280px;
-            height: 180px;
+            width: 260px;
+            height: 160px;
             background: var(--paper-color);
-            padding: 25px;
+            padding: 20px;
             box-sizing: border-box;
-            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), height 0.9s, z-index 0s 0.4s;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), height 0.8s, z-index 0s 0.4s;
             z-index: 1;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            border: 1px solid #f0f0f0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
             overflow-y: auto;
         }
 
         .text {
             font-family: 'Playfair Display', serif;
-            font-size: 1.05rem;
+            font-size: 0.95rem; /* Mniejszy bazowy font */
             color: var(--text-color);
-            line-height: 1.6;
+            line-height: 1.5;
             white-space: pre-wrap;
         }
 
-        /* Animacja otwierania */
-        .opened .envelope::before {
-            transform: rotateX(180deg);
-            z-index: 1; /* Po otwarciu klapa idzie pod list */
-        }
-
-        .opened .seal {
-            opacity: 0;
-            pointer-events: none;
-        }
-
+        /* Otwieranie */
+        .opened .envelope::before { transform: rotateX(180deg); z-index: 1; }
+        .opened .seal { opacity: 0; }
+        
         .opened .letter {
-            /* Zmienione wartości przesunięcia i skali */
-            transform: translateY(-160px) scale(1.3); 
-            height: 350px; /* Wysokość listu po otwarciu */
-            max-height: 70vh; /* Bezpiecznik, aby nie wyszedł poza ekran */
+            transform: translateY(-140px) scale(1.15);
+            height: 320px;
             z-index: 10;
         }
 
-        #final-heart {
-            display: inline-block;
-            opacity: 0;
-            color: #6d0a0a;
-            transition: opacity 1.5s ease;
-            font-size: 1.2rem;
+        /* POPRAWKI DLA TELEFONÓW (Responsive) */
+        @media (max-width: 480px) {
+            .envelope-wrapper {
+                margin-top: 120px; /* Więcej miejsca od góry */
+                transform: scale(0.9);
+            }
+            .opened .letter {
+                transform: translateY(-150px) scale(1.1); /* Mniejsza skala na telefonie */
+                height: 350px;
+                max-height: 65vh; /* Nie dotknie góry ekranu */
+                width: 270px;
+                left: 5px;
+            }
+            .text {
+                font-size: 0.85rem; /* Mniejszy tekst, żeby się nie rozlewał */
+            }
         }
+
+        #final-heart { opacity: 0; color: #6d0a0a; transition: opacity 1.5s; }
 
         .hint {
             position: absolute;
-            bottom: -60px;
+            bottom: -50px;
             width: 100%;
             text-align: center;
             color: #fff;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
             opacity: 0.5;
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.6; }
-            100% { opacity: 0.2; }
-        }
-
-        .letter::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter::-webkit-scrollbar-thumb {
-            background: var(--accent-gold);
-            border-radius: 10px;
-        }
+        @keyframes pulse { 0% {opacity: 0.2;} 50% {opacity: 0.6;} 100% {opacity: 0.2;} }
+        .letter::-webkit-scrollbar { width: 3px; }
+        .letter::-webkit-scrollbar-thumb { background: var(--accent-gold); }
     </style>
 </head>
 <body>
@@ -170,7 +156,7 @@
     <script>
         const message = `Julcia,
 
-Poznalem Cie niedawno, a mimo to mam wrazenie, jakbys pojawila sie w moim zyciu dokladnie w tym momencie, w ktorym bylas najbardziej potrzebna. Od pierwszych chwil stalas sie dla mnie kims wyjatkowym i z kazdym kolejnym dniem coraz mocniej uswiadamiam sobie, jak ogromne znaczenie masz dla mnie. To niesamowite, jak szybko potrafi narodzic sie cos prawdziwego, cos, co od razu czuje sie sercem.
+Poznalem Cie niedawno, a mimo to mam wrazenie, jakbys pojawilas sie w moim zyciu dokladnie w tym momencie, w ktorym bylas najbardziej potrzebna. Od pierwszych chwil stalas sie dla mnie kims wyjatkowym i z kazdym kolejnym dniem coraz mocniej uswiadamiam sobie, jak ogromne znaczenie masz dla mnie. To niesamowite, jak szybko potrafi narodzic sie cos prawdziwego, cos, co od razu czuje sie sercem.
 
 Uwielbiam na Ciebie patrzec. Jest w Tobie cos spokojnego, cieplego i naturalnego, cos, co sprawia, ze gdy jestes obok, wszystko inne przestaje miec znaczenie. Najbardziej kocham momenty, gdy patrzymy sobie prosto w oczy. Wtedy czuje, ze nie musze nic mowic, bo Ty i tak wszystko rozumiesz. A Twoj usmiech… za kazdym razem, gdy go widze, gubie mysli i zapominam, co chcialem powiedziec. Zostaje tylko to wyjatkowe uczucie, ktore pojawia sie gdzies gleboko we mnie.
 
@@ -193,11 +179,8 @@ Patrys`;
         function openLetter() {
             if (started) return;
             started = true;
-            
             document.getElementById('wrapper').classList.add('opened');
             document.getElementById('hint').style.opacity = '0';
-            
-            // List potrzebuje czasu na wysunięcie (ok 0.9s - 1s)
             setTimeout(typeWriter, 1000);
         }
 
@@ -205,8 +188,7 @@ Patrys`;
             if (i < message.length) {
                 document.getElementById("typewriter").innerHTML += message.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50); // Prędkość 50ms jest nieco bardziej płynna
-                
+                setTimeout(typeWriter, 40); 
                 const letterDiv = document.querySelector('.letter');
                 letterDiv.scrollTop = letterDiv.scrollHeight;
             } else {
